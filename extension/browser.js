@@ -2,8 +2,8 @@ const qrcodeElement = document.createElement("div");
 
 var qrcode = new QRCode(qrcodeElement, {
   text: window.location.href,
-  width: 128,
-  height: 128,
+  width: 256,
+  height: 256,
   colorDark: "#000000",
   colorLight: "#ffffff",
   correctLevel: QRCode.CorrectLevel.H
