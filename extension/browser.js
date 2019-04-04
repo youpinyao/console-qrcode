@@ -1,27 +1,44 @@
 (function() {
-  var qrcodeElement = document.createElement("div");
+  function consoleQrcode(log = true) {
+    chrome.storage.sync.get(function({ width = 256, height = 256, consoleLog = true }) {
+      const qrcodeElement = document.createElement("div");
+      const qrcode = new QRCode(qrcodeElement, {
+        text: window.location.href,
+        width,
+        height,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+      });
 
-  var qrcode = new QRCode(qrcodeElement, {
-    text: window.location.href,
-    width: 256,
-    height: 256,
-    colorDark: "#000000",
-    colorLight: "#ffffff",
-    correctLevel: QRCode.CorrectLevel.H
-  });
+      const imgElement = qrcodeElement.querySelector("img");
+      const color = "color:green;";
+      const logLine = function() {
+        console.log(
+          `%c${Array(parseInt(width / 7, 10))
+            .fill("-")
+            .join("")}`,
+            color
+        );
+      };
+      qrcodeElement.querySelector("img").addEventListener("load", function() {
+        const src = qrcodeElement.querySelector("img").getAttribute("src");
+        const styleText = `background:url('${src}') no-repeat; padding-bottom: ${
+          imgElement.height
+        }px; padding-left: ${imgElement.width}px; font-size: 0;`;
 
-  const imgElement = qrcodeElement.querySelector("img");
-
-  function consoleQrcode() {
-    const styleText = `background:url('${qrcodeElement
-      .querySelector("img")
-      .getAttribute("src")}') no-repeat; padding-bottom: ${
-      imgElement.height
-    }px; padding-left: ${imgElement.width}px`;
-    console.log("%c ", styleText);
+        if (log && consoleLog) {
+          logLine();
+          console.log(`%c二维码链接：${window.location.href}`, color);
+          console.log("%c ", styleText);
+          logLine();
+        }
+        chrome.runtime.sendMessage(src);
+      });
+    });
   }
 
-  qrcodeElement.querySelector("img").addEventListener("load", consoleQrcode);
+  consoleQrcode();
 
   window.consoleQrcode = consoleQrcode;
 })();

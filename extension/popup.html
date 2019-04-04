@@ -7,10 +7,37 @@
         cursor: pointer;
         width: 160px;
       }
+      .input-box {
+        padding: 10px 0px 10px 0px;
+      }
+      .input-box input {
+        margin-bottom: 5px;
+      }
+      .qrcode {
+        padding: 10px 0 0 0;
+      }
+      .qrcode img {
+        width: 160px;
+        height: auto;
+      }
     </style>
   </head>
   <body>
-    <div id="button">点我重新在控制台打印二维码</div>
+    <div>二维码尺寸</div>
+    <div class="input-box">
+      <div>宽：<input name="width" type="number"></div>
+      <div>高：<input name="height" type="number"></div>
+      <div>
+        <label for="consoleLog">
+          <input id="consoleLog" type="checkbox" name="consoleLog">
+          <span>console.log</span>
+        </label>
+      </div>
+    </div>
+    <button id="button">重新生成二维码</button>
+    <div class="qrcode">
+      <img src="" id="qrcode" alt="">
+    </div>
     <script src="./popup.js"></script>
   </body>
 </html>
